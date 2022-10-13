@@ -221,7 +221,7 @@ public class CaesarCipher {
 
             // After each iteration through the message, user will be asked if the answer
             // displayed is the correct one
-            System.out.println("Using key=" + key + " , the message is: " + message);
+            System.out.println("\n\nUsing key=" + key + " , the message is: " + message);
             System.out.println("Is the message decrypted? (y/n)");
             String input = scan.nextLine().toLowerCase();
 
