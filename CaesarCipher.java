@@ -17,7 +17,7 @@ public class CaesarCipher {
             if (input == 1) {
                 Encrypt();
             } else if (input == 2) {
-                System.out.println("You have entered Decrypt!");
+                Decrypt();
             } else if (input == 3) {
                 System.out.println("You have entered Find Key!");
             } else if (input == 4) {
@@ -28,10 +28,8 @@ public class CaesarCipher {
             }
         } // end while
     }// end main
-    
 
-    public static void Encrypt()
-    {
+    public static void Encrypt() {
         Scanner scan = new Scanner(System.in);
         String alphabet = "abcdefghijklmnopqrstuvwxyz";
         String ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -44,13 +42,75 @@ public class CaesarCipher {
         System.out.println("Enter the the key which will be used to encrypt:");
         int key = scan.nextInt();
 
-        //looping through each letter in plaintext
-        for(int i=0;i<plaintext.length();i++)
-        {
-            //catpturing the letter at each loop
+        // looping through each letter in plaintext
+        for (int i = 0; i < plaintext.length(); i++) {
+            // catpturing the letter at each loop
             char letter = plaintext.charAt(i);
-            
-            //checking to see if letter is, lowercase or uppercase
+
+            // checking to see if letter is, lowercase or uppercase
+            if (letter >= 'a' && letter <= 'z') {
+                // looping through each letter in the alphabet
+                for (int j = 0; j < alphabet.length(); j++) {
+                    // when specfific letter is found
+                    if (alphabet.charAt(j) == letter) {
+                        // record the index and add on the key to find the index of the new encrypted
+                        // letter
+                        int newIndex = j + key;
+
+                        // if new index is greatder then 25 get the modulo
+                        if (newIndex > 25) {
+                            newIndex = newIndex % 26;
+                        } // end if
+
+                        // add the new encrypted letter to the answer string
+                        answer = answer + String.valueOf(alphabet.charAt(newIndex));
+                    } // end if
+                } // end inner for
+            } // end if
+              // same as above but for capital letters
+            else if (letter >= 'A' && letter <= 'Z') {
+                for (int j = 0; j < ALPHABET.length(); j++) {
+                    if (ALPHABET.charAt(j) == letter) {
+                        int newIndex = j + key;
+
+                        if (newIndex > 25) {
+                            newIndex = newIndex % 26;
+                        } // end if
+
+                        answer = answer + String.valueOf(ALPHABET.charAt(newIndex));
+                    } // end if
+                } // enmd for
+            } // end else if
+              // if letter is neither uppercase or lowercase, its not alphabetic, this does
+              // not change
+            else {
+                answer = answer + String.valueOf(letter);
+            } // end else
+        } // end for
+
+        System.out.println(plaintext + " encrypted using key of " + key + " = " + answer);
+
+    }// end Encrypt()
+
+    public static void Decrypt() {
+        Scanner scan = new Scanner(System.in);
+        String alphabet = "abcdefghijklmnopqrstuvwxyz";
+        String ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        String answer = "";
+
+        System.out.println("You have entered Decrypt!");
+        System.out.println("Enter Encrypted text to be Decrypted:");
+        String text = scan.nextLine();
+
+        System.out.println("Enter the the key which will be used to decrypt:");
+        int key = scan.nextInt();
+
+        //loop through each letter in the encrypted text
+        for(int i=0;i<text.length();i++)
+        {
+            char letter = text.charAt(i);
+
+            //check to see if letter is lowercase or uppercase
             if(letter >= 'a' && letter <= 'z')
             {
                 //looping through each letter in the alphabet
@@ -59,46 +119,48 @@ public class CaesarCipher {
                     //when specfific letter is found
                     if(alphabet.charAt(j) == letter)
                     {
-                        //record the index and add on the key to find the index of the new encrypted letter
-                        int newIndex = j + key;
-                        
-                        //if new index is greatder then 25 get the modulo 
-                        if(newIndex > 25)
+                        //record the index and minus the key to find the index of the new encrypted letter
+                        int newIndex = j - key;
+
+                        //if newIndex is less than 0 add 26 to get its correct position 
+                        if(newIndex < 0)
                         {
-                            newIndex = newIndex % 26;
-                        }//end if
-                        
-                        //add the new encrypted letter to the answer string
+                            newIndex = newIndex + 26;
+                        }
+
                         answer = answer + String.valueOf(alphabet.charAt(newIndex));
                     }//end if
-                }//end inner for
+                }//end for
             }//end if
             //same as above but for capital letters
             else if(letter >= 'A' && letter <= 'Z')
             {
+                //looping through each letter in the alphabet
                 for(int j=0;j<ALPHABET.length();j++)
                 {
+                    //when specfific letter is found
                     if(ALPHABET.charAt(j) == letter)
                     {
-                        int newIndex = j + key;
-                        
-                        if(newIndex > 25)
+                        //record the index and minus the key to find the index of the new encrypted letter
+                        int newIndex = j - key;
+
+                        //if newIndex is less than 0 add 26 to get its correct position 
+                        if(newIndex < 0)
                         {
-                            newIndex = newIndex % 26;
-                        }//end if
-                        
+                            newIndex = newIndex + 26;
+                        }
+
                         answer = answer + String.valueOf(ALPHABET.charAt(newIndex));
                     }//end if
-                }//enmd for
+                }//end for
             }//end else if
-            //if letter is neither uppercase or lowercase, its not alphabetic, this does not change
-            else 
+            else
             {
+                //if letter is neither uppercase or lowercase, its not alphabetic, this does not change
                 answer = answer + String.valueOf(letter);
             }//end else
         }//end for
 
-        System.out.println(plaintext + " encrypted using key of " + key + " = " + answer);
-        
-    }//end Encrypt()
+        System.out.println(text + " decrypted using key of " + key + " = " + answer);
+    }// end Decrypt()
 }// end CaesarCipher
